@@ -15,4 +15,5 @@ This is a web page where actors will be searched and ranked by awards won using 
 - API for fetching actor data
 
 ## License
+
 This project is licensed under the MIT License. ```
