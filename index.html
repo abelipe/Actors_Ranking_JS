@@ -6,9 +6,13 @@
     <title>Lista de Actores</title>
     <link rel="stylesheet" href="index.css">
 </head>
-<body>
-    <h1>Ejemplo</h1>
+<body onload="main()">
+    <h1>Actores</h1>
     <div class="container">
+        <div>
+            <label for="Buscador">Buscador</label>
+            <input type="text" id="Buscador" placeholder="Nombre del Actor">
+        </div>
         <table>
             <thead>
                 <tr>
@@ -18,7 +22,7 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="table-body">
                 <tr>
                     <td>1</td>
                     <td>Actor Name</td>
@@ -35,4 +39,5 @@
         <p>Aqui va la grafica.</p>
     </div>
 </body>
+<script src="ranking.js"></script>
 </html>
