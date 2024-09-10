@@ -66,19 +66,46 @@ document.addEventListener('DOMContentLoaded', () => {
 const searchInput = document.getElementById('Buscador');
 const searchButton = document.querySelector('button');
 const tableBody = document.getElementById('table-body');
+const searchResultsDiv = document.getElementById('search-results');
 
-function search() {
-    const searchTerm = searchInput.value.toLowerCase();
-    //  gets a collection of all table rows and converts it to an array
-    const rows = Array.prototype.slice.call(tableBody.rows); 
-    // check if at least one row matches the search term
-    let found = rows.some((row) => row.textContent.toLowerCase().includes(searchTerm)); 
-    rows.forEach((row) => {
-        // This line uses the forEach() method to iterate over the rows and update their display
-      row.style.display = row.textContent.toLowerCase().includes(searchTerm) ? '' : 'none';
-    });
-  }
 
-  // add event listener to search button
-  searchButton.addEventListener('click', search);
+searchButton.addEventListener('click', () => {
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    const rows = Array.from(tableBody.rows);
+    const searchResults = rows.filter(row => 
+        Array.from(row.cells).some(cell => 
+            cell.textContent.toLowerCase().includes(searchTerm)
+        )
+    );
+
+    searchTerm === '' ? 
+    searchResultsDiv.innerHTML = '' : 
+    (() => {
+        const searchResultsTable = document.createElement('table');
+        searchResultsTable.innerHTML = `
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Awards</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${searchResults.map(row => `
+                    <tr>
+                        ${Array.from(row.cells).slice(0, -1).map(cell => `<td>${cell.textContent}</td>`).join('')}
+                        <td>
+                            <button>View</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        `;
+
+        searchResultsDiv.innerHTML = '';
+        searchResultsDiv.appendChild(searchResultsTable);
+    })();
+});
 
