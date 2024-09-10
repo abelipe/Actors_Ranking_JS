@@ -61,3 +61,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set interval to execute main function every 5 seconds
     const intervalID = setInterval(checkAndExecute, 5000);
 });
+
+// Declare the input, button and table
+const searchInput = document.getElementById('Buscador');
+const searchButton = document.querySelector('button');
+const tableBody = document.getElementById('table-body');
+
+function search() {
+    const searchTerm = searchInput.value.toLowerCase();
+    //  gets a collection of all table rows and converts it to an array
+    const rows = Array.prototype.slice.call(tableBody.rows); 
+    // check if at least one row matches the search term
+    let found = rows.some((row) => row.textContent.toLowerCase().includes(searchTerm)); 
+    rows.forEach((row) => {
+        // This line uses the forEach() method to iterate over the rows and update their display
+      row.style.display = row.textContent.toLowerCase().includes(searchTerm) ? '' : 'none';
+    });
+  }
+
+  // add event listener to search button
+  searchButton.addEventListener('click', search);
+
