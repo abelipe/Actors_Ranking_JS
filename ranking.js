@@ -68,7 +68,7 @@ const searchButton = document.querySelector('button');
 const tableBody = document.getElementById('table-body');
 const searchResultsDiv = document.getElementById('search-results');
 
-
+// Filter function
 searchButton.addEventListener('click', () => {
     const searchTerm = searchInput.value.trim().toLowerCase();
     const rows = Array.from(tableBody.rows);
@@ -109,3 +109,13 @@ searchButton.addEventListener('click', () => {
     })();
 });
 
+// Delete function for main table and filtered table
+
+tableBody.addEventListener('click', (e) => {
+    e.target.tagName === 'BUTTON' && e.target.textContent === 'Delete' ? e.target.parentNode.parentNode.remove() : null;
+});
+
+const tableBodyFiltered = document.getElementById('search-results');
+tableBodyFiltered.addEventListener('click', (e) => {
+    e.target.tagName === 'BUTTON' && e.target.textContent === 'Delete' ? e.target.parentNode.parentNode.remove() : null;
+});
