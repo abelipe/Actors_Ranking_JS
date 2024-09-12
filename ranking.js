@@ -108,9 +108,8 @@ document.addEventListener('DOMContentLoaded', () => {
         })();
     });
 
-   // Event listener for "View" and "Delete" buttons
-   table.addEventListener('click', async (e) => {
-    const row = e.target.tagName === 'BUTTON' && e.target.textContent === "View"? e.target.parentNode.parentNode : null;
+   // Function to handle "View" buttons
+   async function handleViewButtonClick(row) {
     const dialog = document.getElementById('actor-dialog');
     const nameElem = document.getElementById('actor-name');
     const birthdateElem = document.getElementById('actor-birthdate');
@@ -119,33 +118,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const deathyearElem = document.getElementById('death-year');
     const bioElem = document.getElementById('actor-bio');
 
-    const actions = {
-        'View': async () => {
-            const actorID = row.cells[0].textContent;
-            const actorData = await fetch(`https://freetestapi.com/api/v1/actors/${actorID}`).then(res => res.json());
+    const actorID = row.cells[0].textContent;
+    const actorData = await fetch(`https://freetestapi.com/api/v1/actors/${actorID}`).then(res => res.json());
 
-            nameElem.textContent = `Name: ${actorData.name}`;
-            birthdateElem.textContent = `Birth Date: ${actorData.birth_year}`;
-            nationalityElem.textContent = `Nationality: ${actorData.nationality}`;
-            imageElem.src = actorData.image;
-            deathyearElem.textContent = `Death Date: ${actorData.death_year}`;
-            bioElem.textContent = `Biography: ${actorData.biography}`;
+    nameElem.textContent = `Name: ${actorData.name}`;
+    birthdateElem.textContent = `Birth Date: ${actorData.birth_year}`;
+    nationalityElem.textContent = `Nationality: ${actorData.nationality}`;
+    imageElem.src = actorData.image;
+    deathyearElem.textContent = `Death Date: ${actorData.death_year}`;
+    bioElem.textContent = `Biography: ${actorData.biography}`;
 
-
-            dialog.showModal();
-        },
-        
-    };
-
-    actions[e.target.textContent]?.();
-    });
+    dialog.showModal();
+  }
 
     // Close button closes the dialog
     document.getElementById('close-dialog').addEventListener("click", () => {
         document.getElementById('actor-dialog').close();
     });
 
-    // Event listener for filtered table "Delete" buttons
+    // Event listener "Delete" and "View" buttons
     const tableBodyFiltered = document.getElementById('search-results');
     tableBodyFiltered.addEventListener('click', (e) => {
         e.target.tagName === 'BUTTON' && e.target.textContent === 'Delete' ? e.target.parentNode.parentNode.remove() : null;
@@ -153,6 +144,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     tableBody.addEventListener('click', (e) => {
         e.target.tagName === 'BUTTON' && e.target.textContent === 'Delete' ? e.target.parentNode.parentNode.remove() : null;
+    });
+
+    tableBodyFiltered.addEventListener('click', async (e) => {
+        const row = e.target.tagName === 'BUTTON' && e.target.textContent === "View" ? e.target.parentNode.parentNode : null;
+        await (row ? handleViewButtonClick(row) : null);
+    });
+
+    table.addEventListener('click', async (e) => {
+        const row = e.target.tagName === 'BUTTON' && e.target.textContent === "View" ? e.target.parentNode.parentNode : null;
+        await (row ? handleViewButtonClick(row) : null);
     });
 });
 
