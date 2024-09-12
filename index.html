@@ -7,12 +7,24 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
+    <dialog id="actor-dialog">
+        <div class="dialog-content">
+            <p id="actor-name"></p>
+            <p id="actor-birthdate"></p>
+            <p id="actor-nationality"></p>
+            <p id="actor-awards"></p>
+            <p id="death-year"></p>
+            <p id="actor-bio"></p>
+            <img id="actor-image" src="" alt="Actor Image" />
+            <button id="close-dialog">Close</button>
+        </div>
+    </dialog>
     <h1>Actores</h1>
     <div class="container">
         <div>
             <label for="Buscador">Buscador</label>
             <input type="text" id="Buscador" placeholder="Nombre del Actor">
-            <button>Buscar</button>
+            <button id="search_btn">Buscar</button>
             <div id="search-results"></div>
             <p></p>
         </div>
