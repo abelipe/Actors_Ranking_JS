@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const total_ID = []; // Global Array to store all the IDs used
     const table = document.getElementById('table-body');
+    let intervalID;
+
 
     async function getData(needed_ID) {
         const url = `https://freetestapi.com/api/v1/actors/${needed_ID}`;
@@ -59,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
     main();
 
     // Set interval to execute main function every 5 seconds
-    const intervalID = setInterval(checkAndExecute, 5000);
+    intervalID = setInterval(checkAndExecute, 5000);
 
     // Declare the input, button and table
     const searchInput = document.getElementById('Buscador');
@@ -130,6 +132,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     dialog.showModal();
   }
+  async function handleDeleteButtonClick(row) {
+    const actorID = parseInt(row.cells[0].textContent);
+    const index = total_ID.indexOf(actorID);
+    index !== -1 && total_ID.splice(index, 1);
+    //console.log(actorID);
+    clearInterval(intervalID);
+    intervalID = setInterval(checkAndExecute, 5000);
+    
+  }
+    
+
 
     // Close button closes the dialog
     document.getElementById('close-dialog').addEventListener("click", () => {
@@ -139,11 +152,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event listener "Delete" and "View" buttons
     const tableBodyFiltered = document.getElementById('search-results');
     tableBodyFiltered.addEventListener('click', (e) => {
+        console.log(total_ID);
+        const row = e.target.tagName === 'BUTTON' && e.target.textContent === 'Delete' ? e.target.parentNode.parentNode : null;
+        row ? handleDeleteButtonClick(row) : null
         e.target.tagName === 'BUTTON' && e.target.textContent === 'Delete' ? e.target.parentNode.parentNode.remove() : null;
+        
     });
 
     tableBody.addEventListener('click', (e) => {
+        console.log(total_ID);
+        const row = e.target.tagName === 'BUTTON' && e.target.textContent === 'Delete' ? e.target.parentNode.parentNode : null;
+        row ? handleDeleteButtonClick(row) : null
         e.target.tagName === 'BUTTON' && e.target.textContent === 'Delete' ? e.target.parentNode.parentNode.remove() : null;
+        clearInterval(intervalID);
+        intervalID = setInterval(checkAndExecute, 5000);
     });
 
     tableBodyFiltered.addEventListener('click', async (e) => {
