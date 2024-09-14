@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const total_ID = []; // Global Array to store all the IDs used
+    const Save_actors = []; // Global Array to store all the actors
     const table = document.getElementById('table-body');
     let intervalID;
 
@@ -13,7 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const logActors = actors => {
             //console.log(actors);
-            total_ID.push(actors.id);
+            total_ID.push(actors.id); // Push the ID to the array
+            Save_actors.push(actors);
             generateHTML(actors); // Call generateHTML after fetching the data
         };
         const logError = error => console.error(error.message);
@@ -121,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const bioElem = document.getElementById('actor-bio');
 
     const actorID = row.cells[0].textContent;
-    const actorData = await fetch(`https://freetestapi.com/api/v1/actors/${actorID}`).then(res => res.json());
+    const actorData = Save_actors.find(actor => actor.id === parseInt(actorID));
 
     nameElem.textContent = `Name: ${actorData.name}`;
     birthdateElem.textContent = `Birth Date: ${actorData.birth_year}`;
