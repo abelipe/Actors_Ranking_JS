@@ -4,6 +4,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const table = document.getElementById('table-body');
     let intervalID;
     let needed_ID = 0;
+    const total_Awards = []; //contains all the awards
+    let awards_counter = {}; //contains all the awards and the amount of times they appear
+
+    
+
+
+    async function Awards_counter() {
+        const awards = total_Awards;
+        awards_counter = awards.reduce((acc, award) => {
+            acc[award] = (acc[award] || 0) + 1;g
+            return acc;
+        }, {});
+        
+        
+    }
 
 
     async function getData(needed_ID) {
@@ -17,6 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
             //console.log(actors);
             total_ID.push(actors.id); // Push the ID to the array
             Save_actors.push(actors);
+            actors.awards.forEach(award => {
+                total_Awards.push(award);
+            });
+            Awards_counter()
             generateHTML(actors); // Call generateHTML after fetching the data
         };
         const logError = error => console.error(error.message);
@@ -51,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
      // Function to check if all IDs have been collected in the case it does the global counter goes to 1 and clear interval
     const checkAndExecute = () => 
         total_ID.length === 40 
-            ? (clearInterval(intervalID), console.log('All IDs have been collected'), needed_ID=0)
+            ? (clearInterval(intervalID), console.log('All IDs have been collected'), needed_ID=0)//, console.log(total_Awards), console.log(awards_counter))
             : main();
 
     async function main() {
@@ -65,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     main();
 
     // Set interval to execute main function every 5 seconds
-    intervalID = setInterval(checkAndExecute, 5000);
+    intervalID = setInterval(checkAndExecute, 50);
 
     // Declare the input, button and table
     const searchInput = document.getElementById('Buscador');
