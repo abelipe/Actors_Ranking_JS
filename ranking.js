@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const Save_actors = []; // Global Array to store all the actors
     const table = document.getElementById('table-body');
     let intervalID;
+    let needed_ID = 0;
 
 
     async function getData(needed_ID) {
@@ -42,14 +43,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function verify_ID() {
-        const needed_ID = Math.floor(Math.random() * 40) + 1;
+        // to make it random: needed_ID = Math.floor(Math.random() * 40) + 1;
+        needed_ID += 1
         return total_ID.includes(needed_ID) ? verify_ID() : needed_ID;
         // If the ID is already in the array, call the function again to get a new ID
     }
-
+     // Function to check if all IDs have been collected in the case it does the global counter goes to 1 and clear interval
     const checkAndExecute = () => 
         total_ID.length === 40 
-            ? (clearInterval(intervalID), console.log('All IDs have been collected')) 
+            ? (clearInterval(intervalID), console.log('All IDs have been collected'), needed_ID=0)
             : main();
 
     async function main() {
@@ -134,10 +136,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     dialog.showModal();
   }
+  // Function to handle "Delete" buttons
   async function handleDeleteButtonClick(row) {
     const actorID = parseInt(row.cells[0].textContent);
     const index = total_ID.indexOf(actorID);
     index !== -1 && total_ID.splice(index, 1);
+    Save_actors.splice(index, 1);
     //console.log(actorID);
     clearInterval(intervalID);
     intervalID = setInterval(checkAndExecute, 5000);
