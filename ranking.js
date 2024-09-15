@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let awards_counter = {}; //contains all the awards and the amount of times they appear
 
     
-
+    
 
     async function Awards_counter() {
         const awards = total_Awards;
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function verify_ID() {
-        // to make it random: needed_ID = Math.floor(Math.random() * 40) + 1;
+        needed_ID = Math.floor(Math.random() * 40) + 1;
         needed_ID += 1
         return total_ID.includes(needed_ID) ? verify_ID() : needed_ID;
         // If the ID is already in the array, call the function again to get a new ID
@@ -84,13 +84,43 @@ document.addEventListener('DOMContentLoaded', () => {
     main();
 
     // Set interval to execute main function every 5 seconds
-    intervalID = setInterval(checkAndExecute, 50);
+    intervalID = setInterval(checkAndExecute, 5000);
 
     // Declare the input, button and table
     const searchInput = document.getElementById('Buscador');
     const searchButton = document.getElementById('search_btn');
     const tableBody = document.getElementById('table-body');
     const searchResultsDiv = document.getElementById('search-results');
+
+// Function to save the content
+function saveContent() {
+  const inputData = searchInput.value;
+  const searchResultsData = searchResultsDiv.innerHTML;
+  const tableBodyData = tableBody.innerHTML;
+
+  // Store the content in local storage
+  localStorage.setItem('inputData', inputData);
+  localStorage.setItem('searchResultsData', searchResultsData);
+  localStorage.setItem('tableBodyData', tableBodyData);
+}
+
+// Function to retrieve the content
+function retrieveContent() {
+  const inputData = localStorage.getItem('inputData');
+  const searchResultsData = localStorage.getItem('searchResultsData');
+  const tableBodyData = localStorage.getItem('tableBodyData');
+
+  // Populate the HTML elements with the saved data
+  searchInput.value = inputData;
+  searchResultsDiv.innerHTML = searchResultsData;
+  tableBody.innerHTML = tableBodyData;
+}
+
+// Call the saveContent function when the window is about to close
+window.addEventListener('beforeunload', saveContent);
+
+// Call the retrieveContent function when the window is reopened
+window.addEventListener('load', retrieveContent);
 
     // Filter function
     searchButton.addEventListener('click', () => {
@@ -203,5 +233,6 @@ document.addEventListener('DOMContentLoaded', () => {
         await (row ? handleViewButtonClick(row) : null);
     });
 });
+
 
 
