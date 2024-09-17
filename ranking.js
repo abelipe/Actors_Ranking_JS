@@ -171,40 +171,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Function to save the content
     function saveContent() {
-    const inputData = searchInput.value;
-    const searchResultsData = searchResultsDiv.innerHTML;
-    const tableBodyData = tableBody.innerHTML;
-    const save_actors_data = JSON.stringify(Save_actors);
+        const inputData = searchInput.value;
+        const searchResultsData = searchResultsDiv.innerHTML;
+        const tableBodyData = tableBody.innerHTML;
+        const save_actors_data = JSON.stringify(Save_actors);
+        const total_IDs = JSON.stringify(total_ID);
 
-    // Store the content in local storage
-    localStorage.setItem('inputData', inputData);
-    localStorage.setItem('searchResultsData', searchResultsData);
-    localStorage.setItem('tableBodyData', tableBodyData);
-    localStorage.setItem('Save_actors', save_actors_data);
-    localStorage.setItem('total_ID', JSON.stringify(total_ID));
-    
+        // Store the content in local storage
+        localStorage.setItem('inputData', inputData);
+        localStorage.setItem('searchResultsData', searchResultsData);
+        localStorage.setItem('tableBodyData', tableBodyData);
+        localStorage.setItem('Save_actors', save_actors_data);
+        localStorage.setItem('total_ID', total_IDs);
     }
 
-// Function to retrieve the content
+    // Function to retrieve the content
     function retrieveContent() {
-    const inputData = localStorage.getItem('inputData');
-    const searchResultsData = localStorage.getItem('searchResultsData');
-    const tableBodyData = localStorage.getItem('tableBodyData');
-    total_ID = JSON.parse(localStorage.getItem('total_ID'));
-    Save_actors = JSON.parse(localStorage.getItem('Save_actors'));
+        const inputData = localStorage.getItem('inputData');
+        const searchResultsData = localStorage.getItem('searchResultsData');
+        const tableBodyData = localStorage.getItem('tableBodyData');
+        const total_IDs = localStorage.getItem('total_ID');
+        Save_actors = JSON.parse(localStorage.getItem('Save_actors')) || [];
 
-    // Populate the HTML elements with the saved data
-    searchInput.value = inputData;
-    searchResultsDiv.innerHTML = searchResultsData;
-    tableBody.innerHTML = tableBodyData;
-    needed_ID = 0;
+        // Populate the HTML elements with the saved data
+        searchInput.value = inputData || '';
+        searchResultsDiv.innerHTML = searchResultsData || '';
+        tableBody.innerHTML = tableBodyData || '';
+        needed_ID = 0;
+        total_ID = total_IDs ? JSON.parse(total_IDs) : [];
     }
 
-// Call the saveContent function when the window is about to close
-window.addEventListener('beforeunload', saveContent);
 
-// Call the retrieveContent function when the window is reopened
-window.addEventListener('load', retrieveContent);
+    // Call the saveContent function when the window is about to close
+    window.addEventListener('beforeunload', saveContent);
+
+    // Call the retrieveContent function when the window is reopened
+    window.addEventListener('load', retrieveContent);
 
     // Filter function
     searchButton.addEventListener('click', () => {
