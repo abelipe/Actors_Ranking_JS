@@ -295,11 +295,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event listener "Delete" and "View" buttons
     const tableBodyFiltered = document.getElementById('search-results');
     tableBodyFiltered.addEventListener('click', (e) => {
-        //console.log(total_ID);
-        const row = e.target.tagName === 'BUTTON' && e.target.textContent === 'Delete' ? e.target.parentNode.parentNode : null;
-        row ? handleDeleteButtonClick(row) : null
-        e.target.tagName === 'BUTTON' && e.target.textContent === 'Delete' ? e.target.parentNode.parentNode.remove() : null;
-        
+        const row = e.target.tagName === 'BUTTON' && e.target.textContent === 'Delete' && e.target.parentNode.parentNode;
+        const actorID = row && parseInt(row.cells[0].textContent);
+    
+        const mainTableRow = actorID && Array.from(tableBody.rows).find(r => parseInt(r.cells[0].textContent) === actorID);
+        mainTableRow && mainTableRow.remove();
+    
+        row && handleDeleteButtonClick(row);
+        row && row.remove();
+    
+        clearInterval(intervalID);
+        intervalID = setInterval(checkAndExecute, 5000);
     });
 
     tableBody.addEventListener('click', (e) => {
